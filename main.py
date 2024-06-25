@@ -4,6 +4,24 @@ from dotenv import load_dotenv
 from chain import MinimalChainable
 import llm
 
+# PROMPT = [
+#             # prompt #1
+#             "Generate one blog post title about: {{topic}}. Respond in strictly in JSON in this format: {'title': '<title>'}",
+#             # prompt #2
+#             "Generate one hook for the blog post title: {{output[-1].title}}",
+#             # prompt #3
+#             """Based on the BLOG_TITLE and BLOG_HOOK, generate the first paragraph of the blog post.
+# BLOG_TITLE:
+# {{output[-2].title}}
+# BLOG_HOOK:
+# {{output[-1]}}""",
+#         ]
+
+PROMPT = [
+    # prompt #1
+    ""
+
+]
 
 def build_models():
     load_dotenv()
@@ -32,18 +50,7 @@ def prompt_chainable_poc():
         context={"topic": "AI Agents"},
         model=sonnet_3_5_model,
         callable=prompt,
-        prompts=[
-            # prompt #1
-            "Generate one blog post title about: {{topic}}. Respond in strictly in JSON in this format: {'title': '<title>'}",
-            # prompt #2
-            "Generate one hook for the blog post title: {{output[-1].title}}",
-            # prompt #3
-            """Based on the BLOG_TITLE and BLOG_HOOK, generate the first paragraph of the blog post.
-BLOG_TITLE:
-{{output[-2].title}}
-BLOG_HOOK:
-{{output[-1]}}""",
-        ],
+        prompts=PROMPT,
     )
 
     chained_prompts = MinimalChainable.to_delim_text_file(
