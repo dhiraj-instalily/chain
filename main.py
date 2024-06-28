@@ -3,25 +3,19 @@ from typing import List, Dict, Union
 from dotenv import load_dotenv
 from chain import MinimalChainable
 import llm
-
-# PROMPT = [
-#             # prompt #1
-#             "Generate one blog post title about: {{topic}}. Respond in strictly in JSON in this format: {'title': '<title>'}",
-#             # prompt #2
-#             "Generate one hook for the blog post title: {{output[-1].title}}",
-#             # prompt #3
-#             """Based on the BLOG_TITLE and BLOG_HOOK, generate the first paragraph of the blog post.
-# BLOG_TITLE:
-# {{output[-2].title}}
-# BLOG_HOOK:
-# {{output[-1]}}""",
-#         ]
-
-PROMPT = [
-    # prompt #1
-    ""
-
-]
+from prompts_library import *
+DEFULT_PROMPTS = [
+            # prompt #1
+            "Generate one blog post title about: {{topic}}. Respond in strictly in JSON in this format: {'title': '<title>'}",
+            # prompt #2
+            "Generate one hook for the blog post title: {{output[-1].title}}",
+            # prompt #3
+            """Based on the BLOG_TITLE and BLOG_HOOK, generate the first paragraph of the blog post.
+BLOG_TITLE:
+{{output[-2].title}}
+BLOG_HOOK:
+{{output[-1]}}""",
+        ]
 
 def build_models():
     load_dotenv()
@@ -50,7 +44,7 @@ def prompt_chainable_poc():
         context={"topic": "AI Agents"},
         model=sonnet_3_5_model,
         callable=prompt,
-        prompts=PROMPT,
+        prompts=DEFULT_PROMPTS,
     )
 
     chained_prompts = MinimalChainable.to_delim_text_file(
@@ -63,10 +57,31 @@ def prompt_chainable_poc():
 
     pass
 
+def parts_predictor(prompts, context):
 
-def main():
+    sonnet_3_5_model = build_models()
 
-    prompt_chainable_poc()
+    result, context_filled_prompts = MinimalChainable.run(
+        context=context,
+        model=sonnet_3_5_model,
+        callable=prompt,
+        prompts=prompts,
+    )
+
+    chained_prompts = MinimalChainable.to_delim_text_file(
+        "poc_context_filled_prompts", context_filled_prompts
+    )
+    chainable_result = MinimalChainable.to_delim_text_file("poc_prompt_results", result)
+
+    print(f"\n\n📖 Prompts~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n\n{chained_prompts}")
+    print(f"\n\n📊 Results~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n\n{chainable_result}")
+
+    pass
+
+def main(prompts=None, context=None):
+
+    # prompt_chainable_poc()
+    parts_predictor(prompts, context)
 
 
 if __name__ == "__main__":

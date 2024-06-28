@@ -1,20 +1,131 @@
 🔗 -------- Prompt Chain Result #1 -------------
 
-Generate one blog post title about: AI Agents. Respond in strictly in JSON in this format: {'title': '<title>'}
+Use the following thought tempelate to anlyze the RECORD and provide distilled information:
+1. Core Information Categories:
+   a. Equipment Details: Manufacturer, model, type, and identifying information
+   b. Reported Issues: Customer complaints or observed problems
+   c. Technician Actions: Steps taken, diagnostics performed, and outcomes
+   d. Parts Information: Required parts, availability, and ordering details
+   e. Customer Information: Contact details, site information
+   f. Follow-up Actions: Next steps, pending tasks, or escalations
+
+2. Key Patterns and Indicators:
+   a. Equipment Details: Recognize manufacturer names and model numbers.
+   b. Reported Issues: Look for issue-specific terms (e.g., “doors not closing,” “custom made”).
+   c. Technician Actions: Pay attention to sequences describing interactions with customers
+   d. Parts Information: Words like "parts," "replace," "order," product numbers
+   e. Follow-up Actions: Phrases like "need more info," "leaving so in continue"
+
+3. Information Extraction Framework:
+   Step 1: Scan for equipment details in structured fields and comments
+   Step 2: Identify reported issues in comment fields
+   Step 3: Extract technician actions and observations
+   Step 4: Note any parts information or requirements
+   Step 5: Create sections for each category (Equipment Details, Reported Issues, Technician Actions, Follow-Up Requirements).
+   Step 6: Ensure that each category is clearly labeled and contains all relevant details.
+
+4. Challenges and Considerations:
+   - Inconsistent terminology or abbreviations across records, Solution: Use context clues and cross-reference with other records if possible.
+   - Missing or incomplete information in some fields, Solution: Create a glossary of common terms and synonyms.
+   - Multiple issues or actions described in a single comment, Solution: Break down the analysis into smaller batches.
+   - Distinguishing between customer-reported and technician-observed issues
+   - Identifying critical information buried in lengthy comments
+   - Handling records with multiple updates or technician visits
+
+RECORD: 
+{
+  "woComment": "BURNERS VALVE ARE LOOSE OR WON'T MOVE OR TURN ON (MB)",
+  "woComment1": "***8/1/17   CLT UNIT NOT WORKING - HOT SIDE  BURNERS VALVE ARE LOOSE OR WON'T MOVE OR TURN ON ONLY HAD 2 ON TRUCK ,RAN TO SHOP FOR 3rd",
+  "woComment2": "REPLACED 3 PHISICALLY BROKEN BURNER VALVES ON RANGE TOP. UNIT IS BACK IN SERVICE.",
+  "woComment3": "",
+  "woComment4": "",
+  "mfgCode": "SBR",
+  "mfg": "SBR",
+  "mfgName": "SOUTHBEND",
+  "mfgDescription": "SOUTHBEND",
+  "itemNo": "SBR1178202",
+  "ItemDescription": "VALVE,HI-OFF,NAT/LP",
+  "equipTypeDescription": "RANGE GAS MAY INCLUDE OVEN/GRILL/BROILER",
+  "model": "CAFE 4361D"
+}
+
 
 🔗🔗 -------- Prompt Chain Result #2 -------------
 
-Generate one hook for the blog post title: Unleashing the Power of AI Agents: Revolutionizing Task Automation and Decision-Making
+The goal is to create records that allows for efficient querying and analysis of resolved repair cases, enabling technicians to quickly find relevant information when dealing with similar issues in the future from DISTILLED_THOUGHT. If it has multiple issues and resolutions, extract more than one JSONs.
+The fields are - manufacturer_name, manufacturer_number, model_number, issue_customer, issue_technician, resolved_item_no, resolved_item_description, equipment_type_description
+Your output should be strictly in JSON: 
+{
+        "manufacturer_name": "LBC Bakery",
+        "manufacturer_number": "LBE",
+        "model_number": "LMO-MAX-G-LP",
+        "issue_customer": "Pass thru cooler not cooling properly",
+        "issue_technician": "Compressor running but not cooling; possible refrigerant leak",
+        "resolved_item_no": "N/A",
+        "resolved_item_description": "Installed new oven, Dormont hose, gas fittings, water line, and fittings. Assembled oven racks and set insulation."
+        "equipment_type_description": "Convection Oven (Gas)"
+}
+DISTILLED_THOUGHT:
+Based on the provided thought template, here's the analysis of the RECORD:
 
-🔗🔗🔗 -------- Prompt Chain Result #3 -------------
+1. Core Information Categories:
 
-Based on the BLOG_TITLE and BLOG_HOOK, generate the first paragraph of the blog post.
-BLOG_TITLE:
-Unleashing the Power of AI Agents: Revolutionizing Task Automation and Decision-Making
-BLOG_HOOK:
-Here's a hook for the blog post title:
+a. Equipment Details:
+Manufacturer: SOUTHBEND (SBR)
+Model: CAFE 4361D
+Type: RANGE GAS MAY INCLUDE OVEN/GRILL/BROILER
 
-"Imagine a world where your digital workforce thinks, learns, and adapts – welcome to the AI agent revolution."
+b. Reported Issues:
+- Burners valve are loose or won't move or turn on
+- Client unit not working - hot side
 
-This hook aims to capture the reader's attention by painting a vivid picture of the potential impact of AI agents, emphasizing their ability to transform task automation and decision-making processes.
+c. Technician Actions:
+- Replaced 3 physically broken burner valves on range top
+- Ran to shop for 3rd valve (only had 2 on truck)
+
+d. Parts Information:
+Item No: SBR1178202
+Item Description: VALVE,HI-OFF,NAT/LP
+
+e. Customer Information:
+Not provided in the record
+
+f. Follow-up Actions:
+Unit is back in service
+
+2. Key Patterns and Indicators:
+The analysis identified manufacturer names, model numbers, specific issue terms (e.g., "burners valve are loose"), technician actions (e.g., "replaced 3 physically broken burner valves"), and parts information (e.g., "VALVE,HI-OFF,NAT/LP").
+
+3. Information Extraction Framework:
+The analysis followed the steps to extract and categorize information from the record.
+
+4. Challenges and Considerations:
+- The record contained multiple updates in different comment fields, which were consolidated.
+- Some information, such as customer details, was missing from the record.
+- The analysis distinguished between customer-reported issues and technician actions.
+
+Distilled Information:
+
+Equipment Details:
+- Manufacturer: SOUTHBEND (SBR)
+- Model: CAFE 4361D
+- Type: RANGE GAS MAY INCLUDE OVEN/GRILL/BROILER
+
+Reported Issues:
+- Burners valve are loose or won't move or turn on
+- Client unit not working - hot side
+
+Technician Actions:
+- Replaced 3 physically broken burner valves on range top
+- Ran to shop for 3rd valve (only had 2 on truck)
+
+Parts Information:
+- Item No: SBR1178202
+- Item Description: VALVE,HI-OFF,NAT/LP
+
+Follow-up Actions:
+- Unit is back in service
+
+This analysis provides a clear and concise summary of the key information from the record, organized into relevant categories for easy reference and understanding.
+
 
